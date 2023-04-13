@@ -197,55 +197,57 @@ class ExpandableThemeData {
   }
 
   bool isFull() {
-    return this.iconColor != null &&
-        this.useInkWell != null &&
-        this.inkWellBorderRadius != null &&
-        this.animationDuration != null &&
-        this.scrollAnimationDuration != null &&
-        this.crossFadePoint != null &&
-        this.fadeCurve != null &&
-        this.sizeCurve != null &&
-        this.alignment != null &&
-        this.headerAlignment != null &&
-        this.bodyAlignment != null &&
-        this.iconPlacement != null &&
-        this.tapHeaderToExpand != null &&
-        this.tapBodyToExpand != null &&
-        this.tapBodyToCollapse != null &&
-        this.hasIcon != null &&
-        this.iconRotationAngle != null &&
-        this.expandIcon != null &&
-        this.collapseIcon != null;
+    return iconColor != null &&
+        useInkWell != null &&
+        inkWellBorderRadius != null &&
+        animationDuration != null &&
+        scrollAnimationDuration != null &&
+        crossFadePoint != null &&
+        fadeCurve != null &&
+        sizeCurve != null &&
+        alignment != null &&
+        headerAlignment != null &&
+        bodyAlignment != null &&
+        iconPlacement != null &&
+        tapHeaderToExpand != null &&
+        tapBodyToExpand != null &&
+        tapBodyToCollapse != null &&
+        hasIcon != null &&
+        iconRotationAngle != null &&
+        expandIcon != null &&
+        collapseIcon != null;
   }
 
-  bool operator ==(dynamic o) {
-    if (identical(this, o)) {
+  @override
+  bool operator ==(dynamic other) {
+    if (identical(this, other)) {
       return true;
-    } else if (o is ExpandableThemeData) {
-      return this.iconColor == o.iconColor &&
-          this.useInkWell == o.useInkWell &&
-          this.inkWellBorderRadius == o.inkWellBorderRadius &&
-          this.animationDuration == o.animationDuration &&
-          this.scrollAnimationDuration == o.scrollAnimationDuration &&
-          this.crossFadePoint == o.crossFadePoint &&
-          this.fadeCurve == o.fadeCurve &&
-          this.sizeCurve == o.sizeCurve &&
-          this.alignment == o.alignment &&
-          this.headerAlignment == o.headerAlignment &&
-          this.bodyAlignment == o.bodyAlignment &&
-          this.iconPlacement == o.iconPlacement &&
-          this.tapHeaderToExpand == o.tapHeaderToExpand &&
-          this.tapBodyToExpand == o.tapBodyToExpand &&
-          this.tapBodyToCollapse == o.tapBodyToCollapse &&
-          this.hasIcon == o.hasIcon &&
-          this.iconRotationAngle == o.iconRotationAngle &&
-          this.expandIcon == o.expandIcon &&
-          this.collapseIcon == o.collapseIcon;
+    } else if (other is ExpandableThemeData) {
+      return iconColor == other.iconColor &&
+          useInkWell == other.useInkWell &&
+          inkWellBorderRadius == other.inkWellBorderRadius &&
+          animationDuration == other.animationDuration &&
+          scrollAnimationDuration == other.scrollAnimationDuration &&
+          crossFadePoint == other.crossFadePoint &&
+          fadeCurve == other.fadeCurve &&
+          sizeCurve == other.sizeCurve &&
+          alignment == other.alignment &&
+          headerAlignment == other.headerAlignment &&
+          bodyAlignment == other.bodyAlignment &&
+          iconPlacement == other.iconPlacement &&
+          tapHeaderToExpand == other.tapHeaderToExpand &&
+          tapBodyToExpand == other.tapBodyToExpand &&
+          tapBodyToCollapse == other.tapBodyToCollapse &&
+          hasIcon == other.hasIcon &&
+          iconRotationAngle == other.iconRotationAngle &&
+          expandIcon == other.expandIcon &&
+          collapseIcon == other.collapseIcon;
     } else {
       return false;
     }
   }
 
+  @override
   int get hashCode {
     return 0; // we don't care
   }
@@ -275,7 +277,7 @@ class ExpandableTheme extends StatelessWidget {
   final ExpandableThemeData data;
   final Widget child;
 
-  ExpandableTheme({required this.data, required this.child});
+  const ExpandableTheme({Key? key, required this.data, required this.child}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -283,7 +285,7 @@ class ExpandableTheme extends StatelessWidget {
         context.dependOnInheritedWidgetOfExactType<_ExpandableThemeNotifier>();
     return _ExpandableThemeNotifier(
       themeData: ExpandableThemeData.combine(data, n?.themeData),
-      child: this.child,
+      child: child,
     );
   }
 }
@@ -295,7 +297,7 @@ class ExpandableNotifier extends StatefulWidget {
   final bool? initialExpanded;
   final Widget child;
 
-  ExpandableNotifier(
+  const ExpandableNotifier(
       {
       // An optional key
       Key? key,
@@ -351,7 +353,7 @@ class _ExpandableNotifierState extends State<ExpandableNotifier> {
 /// Useful for making multiple [Expandable] widgets synchronized with a single controller.
 class _ExpandableControllerNotifier
     extends InheritedNotifier<ExpandableController> {
-  _ExpandableControllerNotifier(
+  const _ExpandableControllerNotifier(
       {required ExpandableController? controller, required Widget child})
       : super(notifier: controller, child: child);
 }
@@ -361,7 +363,7 @@ class _ExpandableControllerNotifier
 class _ExpandableThemeNotifier extends InheritedWidget {
   final ExpandableThemeData? themeData;
 
-  _ExpandableThemeNotifier({required this.themeData, required Widget child})
+  const _ExpandableThemeNotifier({required this.themeData, required Widget child})
       : super(child: child);
 
   @override
@@ -418,7 +420,7 @@ class Expandable extends StatelessWidget {
 
   final ExpandableThemeData? theme;
 
-  Expandable({
+  const Expandable({
     Key? key,
     required this.collapsed,
     required this.expanded,
@@ -449,7 +451,7 @@ class Expandable extends StatelessWidget {
   }
 }
 
-typedef Widget ExpandableBuilder(
+typedef ExpandableBuilder = Widget Function(
     BuildContext context, Widget collapsed, Widget expanded);
 
 /// Determines the placement of the expand/collapse icon in [ExpandablePanel]
@@ -510,7 +512,7 @@ class ExpandablePanel extends StatelessWidget {
 
   final ExpandableThemeData? theme;
 
-  ExpandablePanel({
+  const ExpandablePanel({
     Key? key,
     this.header,
     required this.collapsed,
@@ -627,7 +629,7 @@ class ExpandablePanel extends StatelessWidget {
       );
     }
 
-    final panel = this.header != null ? buildWithHeader() : buildBody();
+    final panel = header != null ? buildWithHeader() : buildBody();
 
     if (controller != null) {
       return ExpandableNotifier(
@@ -653,10 +655,10 @@ class ExpandablePanel extends StatelessWidget {
 class ExpandableIcon extends StatefulWidget {
   final ExpandableThemeData? theme;
 
-  ExpandableIcon({
+  const ExpandableIcon({Key? key, 
     this.theme,
     // ignore: deprecated_member_use_from_same_package
-  });
+  }) : super(key: key);
 
   @override
   _ExpandableIconState createState() => _ExpandableIconState();
@@ -762,7 +764,7 @@ class ExpandableButton extends StatelessWidget {
   final ExpandableThemeData? theme;
   final Function(bool)? onTap;
 
-  ExpandableButton({this.child, this.theme, this.onTap});
+  const ExpandableButton({Key? key, this.child, this.theme, this.onTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -813,7 +815,7 @@ class ScrollOnExpand extends StatefulWidget {
 
   final ExpandableThemeData? theme;
 
-  ScrollOnExpand({
+  const ScrollOnExpand({
     Key? key,
     required this.child,
     this.scrollOnExpand = true,

@@ -29,7 +29,3 @@
 .pub/
 /build/
 
-android/
-ios/
-web/
-test/
